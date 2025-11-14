@@ -44,11 +44,15 @@ def get():
         {"ip": row[0], "time": row[1], "full_name": row[2], "username": row[3]}
         for row in rows
     ]
-    return jsonify(result)
+    if result:
+        return jsonify(result)
+    else:
+        return jsonify({"Answer": "No text provided"})
 
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+
 
 
