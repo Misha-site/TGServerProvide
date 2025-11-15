@@ -49,10 +49,27 @@ def get():
     else:
         return jsonify({"Answer": "No text provided"})
 
+@app.route("/clear", methods=['POST'])
+def clear():
+    if not check_token():
+        return jsonify({"error": "Forbidden"}), 403
+
+    try:
+        conn = sqlite3.connect("data.db")
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM users")
+        conn.commit()
+        conn.close()
+        return jsonify({"status": "All data cleared"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+
 
 
 
